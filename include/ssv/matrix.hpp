@@ -20,7 +20,7 @@ public:
     }
     
     /**
-     * Create matrix from initializer list
+     * Create matrix from initializer list. Values are set row first. Unset values are zero.
      */
     matrix(std::initializer_list<T> l) : m{}
     {
@@ -38,6 +38,9 @@ public:
         }
     }
     
+    /**
+     * Create identity matrix
+     */
     static matrix identity()
     {
         matrix m;
@@ -57,6 +60,9 @@ public:
         return m[i];
     }
     
+    /**
+     * @return row i
+     */
     const std::array<T, kCols>& operator[](size_t i) const
     {
         assert(i < kRows);
