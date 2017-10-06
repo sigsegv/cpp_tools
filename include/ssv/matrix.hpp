@@ -2,11 +2,11 @@
 
 #include <cassert>
 #include <array>
+#include <iostream>
 #include <initializer_list>
 
 namespace ssv
 {
-
 template<typename T, unsigned kRows, unsigned kCols>
 class matrix
 {
@@ -81,7 +81,10 @@ public:
                 T y = T(0);
                 for(unsigned i = 0; i < kRhsRows; ++i)
                 {
+                    //const T a = m[r][i];
+                    //const T b = rhs[i][c];
                     y += m[r][i] * rhs[i][c];
+                    //y += a * b;
                 }
                 result[r][c] = y;
             }
@@ -92,8 +95,24 @@ public:
 private:
     std::array< std::array<T, kCols>, kRows> m;
 };
- 
+
+template<typename T, unsigned kRows, unsigned kCols>
+std::ostream& operator<<(std::ostream& os, const matrix<T, kRows, kCols>& m)
+{
+    for(unsigned r = 0; r < kRows; ++r)
+    {
+        os << "[";
+        for(unsigned c = 0; c < kCols; ++c)
+        {
+            os << m[r][c];
+            if(c + 1 < kCols) os << ", ";
+        }
+        os << "]";
+        if(r + 1 < kRows) os << "\n";
+    }
+}
+
 using matrix41f = matrix<float, 4, 1>;
 using matrix44f = matrix<float, 4, 4>;
-    
+
 }

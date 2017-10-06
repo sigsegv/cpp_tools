@@ -1,4 +1,5 @@
 #include <ssv/matrix.hpp>
+#include "utils.hpp"
 #include "catch.hpp"
 
 TEST_CASE("matrix41f default constructor", "[matrix41f]")
@@ -86,4 +87,15 @@ TEST_CASE("multiply two 44 matrices", "[general]")
     REQUIRE(c[2][2] == 3.f);
     REQUIRE(c[3][3] == 4.f);
     REQUIRE(c[2][3] == 0.f);
+}
+
+TEST_CASE("multiply two 44 matrices again", "[general]")
+{
+    ssv::matrix44f a = {300.f, 0.f, -100.f, 400.f, 0.f, 300.f, -100.f, 400.f, 0.f, 0.f, 95.625f, 127.5f, 0.f, 0.f, -0.25f, 1.f};
+    ssv::matrix41f b = {0.131261f, -0.132153f, 0.49872f, 1.f};
+    auto c = a*b;
+    REQUIRE(equals_approx(c[0][0], 389.506f));
+    REQUIRE(equals_approx(c[1][0], 310.482f));
+    REQUIRE(equals_approx(c[2][0], 175.19f));
+    REQUIRE(equals_approx(c[3][0], 0.87532f));
 }
