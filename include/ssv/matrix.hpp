@@ -81,10 +81,7 @@ public:
                 T y = T(0);
                 for(unsigned i = 0; i < kRhsRows; ++i)
                 {
-                    //const T a = m[r][i];
-                    //const T b = rhs[i][c];
                     y += m[r][i] * rhs[i][c];
-                    //y += a * b;
                 }
                 result[r][c] = y;
             }
