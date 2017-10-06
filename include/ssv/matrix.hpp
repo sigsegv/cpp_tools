@@ -107,6 +107,7 @@ std::ostream& operator<<(std::ostream& os, const matrix<T, kRows, kCols>& m)
         os << "]";
         if(r + 1 < kRows) os << "\n";
     }
+    return os;
 }
 
 using matrix41f = matrix<float, 4, 1>;
