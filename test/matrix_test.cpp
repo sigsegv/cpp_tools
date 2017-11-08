@@ -99,3 +99,16 @@ TEST_CASE("multiply two 44 matrices again", "[general]")
     REQUIRE(equals_approx(c[2][0], 175.19f));
     REQUIRE(equals_approx(c[3][0], 0.87532f));
 }
+
+TEST_CASE("transpose a 3x2 matrix", "[transpose]")
+{
+    using matrix32f = ssv::matrix<float, 3, 2>;
+    matrix32f a = {1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
+    auto c = a.transpose();
+    REQUIRE(c[0][0] == 1.f);
+    REQUIRE(c[0][1] == 3.f);
+    REQUIRE(c[0][2] == 5.f);
+    REQUIRE(c[1][0] == 2.f);
+    REQUIRE(c[1][1] == 4.f);
+    REQUIRE(c[1][2] == 6.f);
+}

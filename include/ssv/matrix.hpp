@@ -52,6 +52,22 @@ public:
     }
     
     /**
+     * Return a matrix that represents this matrix flipped over its diagonal.
+     */
+    matrix<T, kCols, kRows> transpose() const
+    {
+        matrix<T, kCols, kRows> result;
+        for(unsigned r = 0; r < kRows; ++r)
+        {
+            for(unsigned c = 0; c < kCols; ++c)
+            {
+                result[c][r] = m[r][c];
+            }
+        }
+        return result;
+    }
+    
+    /**
      * @return row i
      */
     std::array<T, kCols>& operator[](size_t i)
