@@ -67,6 +67,24 @@ public:
         return result;
     }
     
+    //template<unsigned kRows - 1, unsigned kCols - 1>
+    matrix<T, kRows - 1, kCols -1> minor(unsigned row, unsigned col) const
+    {
+        matrix<T, kRows - 1, kCols -1> result;
+        for(unsigned r = 0; r < kRows; ++r)
+        {
+            if(r == row) continue;
+            unsigned new_row = r > row ? r - 1 : r;
+            for(unsigned c = 0; c < kCols; ++c)
+            {
+                if(c == col) continue;
+                unsigned new_col = c > col ? c - 1 : c;
+                result[new_row][new_col] = m[r][c];
+            }
+        }
+        return result;
+    }
+    
     /**
      * @return row i
      */
@@ -103,6 +121,21 @@ public:
             }
         }
         return result;
+    }
+    
+    template<unsigned kRhsRows, unsigned kRhsCols>
+    constexpr bool operator==(const matrix<T, kRhsRows, kRhsCols>& rhs) const
+    {
+        if(kRhsRows != kRows) return false;
+        if(kRhsCols != kCols) return false;
+        for(unsigned r = 0; r < kRows; ++r)
+        {
+            for(unsigned c = 0; c < kCols; ++c)
+            {
+                if(m[r][c] != rhs[r][c]) return false;
+            }
+        }
+        return true;
     }
     
 private:
