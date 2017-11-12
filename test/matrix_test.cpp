@@ -134,3 +134,12 @@ TEST_CASE("equality", "[general]")
     REQUIRE(b == c);
 }
 
+TEST_CASE("scalar multiply", "[general]")
+{
+    using matrix33f = ssv::matrix<float, 3, 3>;
+    matrix33f a = matrix33f::identity();
+    auto b = a * 3.f;
+    matrix33f c = {3.f, 0.f, 0.f, 0.f, 3.f, 0.f, 0.f, 0.f, 3.f};
+    REQUIRE(b == c);
+}
+

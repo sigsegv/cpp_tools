@@ -123,6 +123,20 @@ public:
         return result;
     }
     
+    template<typename N>
+    matrix operator*(const N& rhs) const
+    {
+        matrix<T, kRows, kCols> result;
+        for(unsigned r = 0; r < kRows; ++r)
+        {
+            for(unsigned c = 0; c < kCols; ++c)
+            {
+                result[r][c] = m[r][c] * rhs;
+            }
+        }
+        return result;
+    }
+    
     template<unsigned kRhsRows, unsigned kRhsCols>
     constexpr bool operator==(const matrix<T, kRhsRows, kRhsCols>& rhs) const
     {
