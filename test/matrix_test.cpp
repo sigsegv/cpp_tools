@@ -141,5 +141,17 @@ TEST_CASE("scalar multiply", "[general]")
     auto b = a * 3.f;
     matrix33f c = {3.f, 0.f, 0.f, 0.f, 3.f, 0.f, 0.f, 0.f, 3.f};
     REQUIRE(b == c);
+    
+    auto d = 3.f * a;
+    REQUIRE(d == c);
 }
 
+TEST_CASE("determinant", "[general]")
+{
+    using matrix22f = ssv::matrix<float, 2,2 >;
+    matrix22f a = {4.f, 6.f, 3.f, 8.f};
+    REQUIRE(a.determinant() == 14.f);
+    using matrix33f = ssv::matrix<float, 3, 3>;
+    matrix33f b = {6.f, 1.f, 1.f, 4.f, -2.f, 5.f, 2.f, 8.f, 7.f};
+    REQUIRE(b.determinant() == -306.f);
+}

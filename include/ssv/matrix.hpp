@@ -67,9 +67,9 @@ public:
         return result;
     }
     
-    //template<unsigned kRows - 1, unsigned kCols - 1>
     matrix<T, kRows - 1, kCols -1> minor(unsigned row, unsigned col) const
     {
+        static_assert(kRows == kCols, "minor only possible on square matrices");
         matrix<T, kRows - 1, kCols -1> result;
         for(unsigned r = 0; r < kRows; ++r)
         {
@@ -84,6 +84,18 @@ public:
         }
         return result;
     }
+    
+    float determinant() const
+    {
+        return determinant_impl(*this);
+    }
+    
+//    matrix inverse() const
+//    {
+//        constexpr float determinant = determinant();
+//        if(determinant == 0.f) throw std::runtime_error("matrix is singular (not invertable)");
+//        
+//    }
     
     /**
      * @return row i
@@ -155,6 +167,33 @@ public:
 private:
     std::array< std::array<T, kCols>, kRows> m;
 };
+    
+template<typename T, unsigned kRows, unsigned kCols>
+float determinant_impl(const matrix<T, kRows, kCols>& m);
+    
+template<>
+float determinant_impl<float, 2, 2>(const matrix<float, 2, 2>& m)
+{
+    return (m[0][0] * m[1][1]) - (m[0][1] * m[1][0]);
+}
+    
+template<>
+float determinant_impl<float, 3, 3>(const matrix<float, 3, 3>& m)
+{
+    return (m[0][0] * m.minor(0,0).determinant()) - (m[0][1] * m.minor(0,1).determinant()) + (m[0][2] * m.minor(0, 2).determinant());
+}
+    
+template<>
+float determinant_impl<float, 4, 4>(const matrix<float, 4, 4>& m)
+{
+    return (m[0][0] * m.minor(0,0).determinant()) - (m[0][1] * m.minor(0,1).determinant()) + (m[0][2] * m.minor(0, 2).determinant()) - (m[0][3] * m.minor(0, 3).determinant());
+}
+    
+template<typename N, typename T, unsigned kRows, unsigned kCols>
+matrix<T, kRows, kCols> operator*(const N& n, const matrix<T, kRows, kCols>& m)
+{
+    return m * n;
+}
 
 template<typename T, unsigned kRows, unsigned kCols>
 std::ostream& operator<<(std::ostream& os, const matrix<T, kRows, kCols>& m)
