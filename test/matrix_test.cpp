@@ -155,3 +155,51 @@ TEST_CASE("determinant", "[general]")
     matrix33f b = {6.f, 1.f, 1.f, 4.f, -2.f, 5.f, 2.f, 8.f, 7.f};
     REQUIRE(b.determinant() == -306.f);
 }
+
+TEST_CASE("inverse 2x2 matrix", "[general]")
+{
+    using matrix22f = ssv::matrix<float, 2,2 >;
+    matrix22f a = {4.f, 7.f, 2.f, 6.f};
+    auto b = a.inverse();
+    matrix22f c = {0.6f, -0.7f, -0.2f, 0.4f};
+    REQUIRE(b == c);
+}
+
+TEST_CASE("inverse 3x3 matrix", "[general]")
+{
+    using matrix33f = ssv::matrix<float, 3, 3>;
+    matrix33f a = {3.f, 0.f, 2.f, 2.f, 0.f, -2.f, 0.f, 1.f, 1.f};
+    auto b = a.inverse();
+    matrix33f c = {0.2f, 0.2f, 0.f, -0.2f, 0.3f, 1.f, 0.2f, -0.3f, 0.f};
+    REQUIRE(b == c);
+}
+
+TEST_CASE("double inverse on 2x2 matrix", "[general]")
+{
+    using matrix22f = ssv::matrix<float, 2,2 >;
+    matrix22f a = {4.f, 7.f, 2.f, 6.f};
+    auto b = a.inverse();
+    auto c = b.inverse();
+    for(unsigned row = 0; row < 2; ++row)
+    {
+        for(unsigned col = 0; col < 2; ++col)
+        {
+            REQUIRE(equals_approx(a[row][col], c[row][col]));
+        }
+    }
+}
+
+TEST_CASE("double inverse on 3x3 matrix", "[general]")
+{
+    using matrix33f = ssv::matrix<float, 3, 3>;
+    matrix33f a = {3.f, 0.f, 2.f, 2.f, 0.f, -2.f, 0.f, 1.f, 1.f};
+    auto b = a.inverse();
+    matrix33f c = b.inverse();
+    for(unsigned row = 0; row < 3; ++row)
+    {
+        for(unsigned col = 0; col < 3; ++col)
+        {
+            REQUIRE(equals_approx(a[row][col], c[row][col]));
+        }
+    }
+}

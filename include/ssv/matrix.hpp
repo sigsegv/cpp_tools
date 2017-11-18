@@ -52,7 +52,7 @@ public:
     }
     
     /**
-     * Return a matrix that represents this matrix flipped over its diagonal.
+     * Return a matrix that represents this matrix flipped over its diagonal. Also known as Adjugate or Adjoint.
      */
     matrix<T, kCols, kRows> transpose() const
     {
@@ -90,13 +90,14 @@ public:
         return determinant_impl(*this);
     }
     
-//    matrix inverse() const
-//    {
-//        constexpr float determinant = determinant();
-//        if(determinant == 0.f) throw std::runtime_error("matrix is singular (not invertable)");
-//        
-//    }
-    
+    matrix inverse() const
+    {
+        static_assert(kRows == kCols, "inverse only possible on square matrices");
+        const float det = determinant();
+        if(det == 0.f) throw std::runtime_error("matrix is singular (not invertable)");
+        return inverse_impl(det, *this);
+    }
+
     /**
      * @return row i
      */
@@ -187,6 +188,32 @@ template<>
 float determinant_impl<float, 4, 4>(const matrix<float, 4, 4>& m)
 {
     return (m[0][0] * m.minor(0,0).determinant()) - (m[0][1] * m.minor(0,1).determinant()) + (m[0][2] * m.minor(0, 2).determinant()) - (m[0][3] * m.minor(0, 3).determinant());
+}
+    
+template<typename T, unsigned kRows, unsigned kCols>
+matrix<T, kRows, kCols> inverse_impl(float determinant, const matrix<T, kRows, kCols>& m)
+{
+    const float denom = 1.f / determinant;
+    matrix<T, kRows, kCols> result;
+    for(unsigned r = 0; r < kRows; ++r)
+    {
+        for(unsigned c = 0; c < kCols; ++c)
+        {
+            auto mm = m.minor(r, c);
+            result[r][c] = mm.determinant() * ((r + c) % 2 == 0 ? 1.f : -1.f);
+        }
+    }
+    result = result.transpose();
+    result = result * denom;
+    return result;
+}
+    
+template<>
+matrix<float, 2, 2> inverse_impl<float, 2, 2>(float determinant, const matrix<float, 2, 2>& m)
+{
+    const float denom = 1.f / determinant;
+    matrix<float, 2, 2> result = {m[1][1], -m[0][1], -m[1][0], m[0][0]};
+    return result * denom;
 }
     
 template<typename N, typename T, unsigned kRows, unsigned kCols>
