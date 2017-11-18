@@ -151,7 +151,7 @@ public:
     }
     
     template<unsigned kRhsRows, unsigned kRhsCols>
-    constexpr bool operator==(const matrix<T, kRhsRows, kRhsCols>& rhs) const
+    bool operator==(const matrix<T, kRhsRows, kRhsCols>& rhs) const
     {
         if(kRhsRows != kRows) return false;
         if(kRhsCols != kCols) return false;
