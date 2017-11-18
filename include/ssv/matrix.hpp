@@ -52,7 +52,7 @@ public:
     }
     
     /**
-     * Return a matrix that represents this matrix flipped over its diagonal. Also known as Adjugate or Adjoint.
+     * Return a matrix that represents this matrix flipped over its diagonal.
      */
     matrix<T, kCols, kRows> transpose() const
     {
