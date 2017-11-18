@@ -67,9 +67,12 @@ public:
         return result;
     }
     
-    matrix<T, kRows - 1, kCols -1> minor(unsigned row, unsigned col) const
+	/**
+	 * Return the submatrix of this matrix by removing row and col.
+	 */
+    matrix<T, kRows - 1, kCols -1> submatrix(unsigned row, unsigned col) const
     {
-        static_assert(kRows == kCols, "minor only possible on square matrices");
+        static_assert(kRows > 1 && kCols > 1, "Matrix too small to get submatrix");
         matrix<T, kRows - 1, kCols -1> result;
         for(unsigned r = 0; r < kRows; ++r)
         {
@@ -181,13 +184,13 @@ float determinant_impl<float, 2, 2>(const matrix<float, 2, 2>& m)
 template<>
 float determinant_impl<float, 3, 3>(const matrix<float, 3, 3>& m)
 {
-    return (m[0][0] * m.minor(0,0).determinant()) - (m[0][1] * m.minor(0,1).determinant()) + (m[0][2] * m.minor(0, 2).determinant());
+    return (m[0][0] * m.submatrix(0,0).determinant()) - (m[0][1] * m.submatrix(0,1).determinant()) + (m[0][2] * m.submatrix(0, 2).determinant());
 }
     
 template<>
 float determinant_impl<float, 4, 4>(const matrix<float, 4, 4>& m)
 {
-    return (m[0][0] * m.minor(0,0).determinant()) - (m[0][1] * m.minor(0,1).determinant()) + (m[0][2] * m.minor(0, 2).determinant()) - (m[0][3] * m.minor(0, 3).determinant());
+    return (m[0][0] * m.submatrix(0,0).determinant()) - (m[0][1] * m.submatrix(0,1).determinant()) + (m[0][2] * m.submatrix(0, 2).determinant()) - (m[0][3] * m.submatrix(0, 3).determinant());
 }
     
 template<typename T, unsigned kRows, unsigned kCols>
@@ -199,7 +202,7 @@ matrix<T, kRows, kCols> inverse_impl(float determinant, const matrix<T, kRows, k
     {
         for(unsigned c = 0; c < kCols; ++c)
         {
-            auto mm = m.minor(r, c);
+            auto mm = m.submatrix(r, c);
             result[r][c] = mm.determinant() * ((r + c) % 2 == 0 ? 1.f : -1.f);
         }
     }

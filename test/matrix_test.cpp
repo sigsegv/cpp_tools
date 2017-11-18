@@ -113,11 +113,11 @@ TEST_CASE("transpose a 3x2 matrix", "[transpose]")
     REQUIRE(c[1][2] == 6.f);
 }
 
-TEST_CASE("minor of a matrix", "[minor]")
+TEST_CASE("submatrix of a matrix", "[minor]")
 {
     using matrix33f = ssv::matrix<float, 3, 3>;
     matrix33f a = {1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f};
-    auto b = a.minor(1, 1);
+    auto b = a.submatrix(1, 1);
     REQUIRE(b[0][0] == 1.f);
     REQUIRE(b[0][1] == 3.f);
     REQUIRE(b[1][0] == 7.f);
@@ -129,7 +129,7 @@ TEST_CASE("equality", "[general]")
     using matrix33f = ssv::matrix<float, 3, 3>;
     using matrix22f = ssv::matrix<float, 2, 2>;
     matrix33f a = {1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f};
-    auto b = a.minor(1, 1);
+    auto b = a.submatrix(1, 1);
     matrix22f c = {1.f, 3.f, 7.f, 9.f};
     REQUIRE(b == c);
 }
