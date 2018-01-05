@@ -100,6 +100,21 @@ public:
         if(det == 0.f) throw std::runtime_error("matrix is singular (not invertable)");
         return inverse_impl(det, *this);
     }
+    
+    /**
+     * Replace column with values from new 1 row matrix
+     *
+     * @return this
+     */
+    matrix& set_col(unsigned col, const matrix<T, 1, kRows>& v)
+    {
+        if(!(col < kCols)) throw std::runtime_error("Out of bounds col");
+        for(unsigned i = 0; i < kRows; ++i)
+        {
+            m[i][col] = v[0][i];
+        }
+        return *this;
+    }
 
     /**
      * @return row i
